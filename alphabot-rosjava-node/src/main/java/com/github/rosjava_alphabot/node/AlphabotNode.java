@@ -11,6 +11,10 @@ import org.ros.node.ConnectedNode;
 import org.ros.node.topic.Publisher;
 import org.ros.node.topic.Subscriber;
 
+import com.github.rosjava_alphabot.driver.AlphabotDriver;
+import com.github.rosjava_alphabot.msgs.DistMsg;
+import com.github.rosjava_alphabot.msgs.TwistMsg;
+
 import geometry_msgs.Twist;
 import geometry_msgs.Vector3Stamped;
 

@@ -1,4 +1,4 @@
-package com.github.rosjava_alphabot.node;
+package com.github.rosjava_alphabot.msgs;
 
 public class TwistMsg {
 	public double linear;
