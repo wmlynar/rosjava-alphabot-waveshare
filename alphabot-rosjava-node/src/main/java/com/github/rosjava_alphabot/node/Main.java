@@ -14,9 +14,6 @@ public class Main {
 	private static AlphabotNode alphabotNode = new AlphabotNode();
 
 	public static void main(String[] args) {
-		// Set up the executor for both of the nodes
-		NodeMainExecutor nodeMainExecutor = DefaultNodeMainExecutor.newDefault();
-
 		NodeConfiguration nodeConfiguration = null;
 		if (args.length == 0) {
 			args = EMPTY;
@@ -24,6 +21,7 @@ public class Main {
 		CommandLineLoader loader = new CommandLineLoader(Lists.newArrayList(args));
 		nodeConfiguration = loader.build();
 
+		NodeMainExecutor nodeMainExecutor = DefaultNodeMainExecutor.newDefault();
 		nodeMainExecutor.execute(alphabotNode, nodeConfiguration);
 	}
 
