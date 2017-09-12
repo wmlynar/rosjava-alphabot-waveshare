@@ -7,6 +7,13 @@
 		<artifactId>rosjava-waveshare-alphabot</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
+	<dependencies>
+		<dependency>
+			<groupId>com.github.rosjava-alphabot</groupId>
+			<artifactId>alphabot-driver</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
 	<profiles>
 		<profile>
 			<id>jar-with-dependencies</id>
@@ -101,6 +108,4 @@
 			</build>
 		</profile>
 	</profiles>
-
-
 </project>
