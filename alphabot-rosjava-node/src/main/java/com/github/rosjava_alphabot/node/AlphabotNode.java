@@ -14,7 +14,7 @@ import geometry_msgs.Vector3Stamped;
 public class AlphabotNode extends AbstractNodeMain {
 
 	private AlphabotDriver driver = new AlphabotDriver();
-	private Publisher<Vector3Stamped> publisher = null;
+	private Publisher<Vector3Stamped> distPublisher = null;
 
 	@Override
 	public GraphName getDefaultNodeName() {
@@ -24,10 +24,8 @@ public class AlphabotNode extends AbstractNodeMain {
 	@Override
 	public void onStart(final ConnectedNode connectedNode) {
 
-		publisher = connectedNode.newPublisher("dist", Vector3Stamped._TYPE);
-		
-		Rate rate = new WallTimeRate(10);
-		
+		Rate distRate = new WallTimeRate(10);
+		distPublisher = connectedNode.newPublisher("dist", Vector3Stamped._TYPE);
 		connectedNode.executeCancellableLoop(new CancellableLoop() {
 
 			@Override
@@ -36,12 +34,12 @@ public class AlphabotNode extends AbstractNodeMain {
 				
 				Dist dist = driver.getDistances();
 				
-				Vector3Stamped distVector = publisher.newMessage();
+				Vector3Stamped distVector = distPublisher.newMessage();
 				distVector.getHeader().setStamp(time);
 				distVector.getVector().setX(dist.left);
 				distVector.getVector().setY(dist.right);
 				
-				rate.wait();
+				distRate.wait();
 			}
 			
 		});
