@@ -20,7 +20,7 @@ public class AlphabotNode extends AbstractNodeMain {
 	public GraphName getDefaultNodeName() {
 		return GraphName.of("alphabot");
 	}
-	
+
 	@Override
 	public void onStart(final ConnectedNode connectedNode) {
 
@@ -31,20 +31,19 @@ public class AlphabotNode extends AbstractNodeMain {
 			@Override
 			protected void loop() throws InterruptedException {
 				Time time = connectedNode.getCurrentTime();
-				
+
 				Dist dist = driver.getDistances();
-				
+
 				Vector3Stamped distVector = distPublisher.newMessage();
 				distVector.getHeader().setStamp(time);
 				distVector.getVector().setX(dist.left);
 				distVector.getVector().setY(dist.right);
-				
+
 				distRate.wait();
 			}
-			
+
 		});
-		
+
 	}
-	
 
 }

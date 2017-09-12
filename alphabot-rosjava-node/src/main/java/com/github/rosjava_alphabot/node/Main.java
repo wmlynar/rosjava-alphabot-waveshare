@@ -10,7 +10,7 @@ import com.google.common.collect.Lists;
 
 public class Main {
 	private static String[] EMPTY = { "" };
-	
+
 	private static AlphabotNode alphabotNode = new AlphabotNode();
 
 	public static void main(String[] args) {
