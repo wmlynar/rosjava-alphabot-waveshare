@@ -1,0 +1,121 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.github.rosjava-alphabot</groupId>
+	<artifactId>rosjava-waveshare-alphabot</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+
+		<!-- jar parameters -->
+		<main.class>org.ros.rosjava_tutorial_pubsub.PubSubExampleWithCore</main.class>
+
+		<!-- raspberry pi parameters -->
+		<pi.host>192.168.1.20</pi.host>
+		<pi.port>22</pi.port>
+		<pi.user>pi</pi.user>
+		<pi.password>raspberry</pi.password>
+		<pi.deployDirectory>/home/pi/java</pi.deployDirectory>
+	</properties>
+	<modules>
+		<module>alphabot-driver</module>
+		<module>alphabot-rosjava-node</module>
+	</modules>
+	<dependencies>
+		<!-- roscore dependencies -->
+		<dependency>
+			<groupId>org.ros.rosjava_core</groupId>
+			<artifactId>rosjava</artifactId>
+			<version>0.3.5-wmlynar</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ros.rosjava_bootstrap</groupId>
+			<artifactId>message_generation</artifactId>
+			<version>[0.3,0.4)</version>
+		</dependency>
+		<dependency>
+			<groupId>dnsjava</groupId>
+			<artifactId>dnsjava</artifactId>
+			<version>2.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>com.springsource.org.apache.commons.logging</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>com.springsource.org.apache.commons.net</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>12.0</version>
+		</dependency>
+		<!-- standard messages -->
+		<dependency>
+			<groupId>org.ros.rosjava_messages</groupId>
+			<artifactId>std_msgs</artifactId>
+			<version>[0.5,0.6)</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ros.rosjava_messages</groupId>
+			<artifactId>sensor_msgs</artifactId>
+			<version>[1.12,1.13)</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ros.rosjava_messages</groupId>
+			<artifactId>rosgraph_msgs</artifactId>
+			<version>[1.11,1.12)</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ros.rosjava_messages</groupId>
+			<artifactId>geometry_msgs</artifactId>
+			<version>[1.12,1.13)</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ros.rosjava_messages</groupId>
+			<artifactId>nav_msgs</artifactId>
+			<version>[1.12,1.13)</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ros.rosjava_messages</groupId>
+			<artifactId>tf2_msgs</artifactId>
+			<version>[0.5,0.6)</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ros.rosjava_messages</groupId>
+			<artifactId>rosjava_test_msgs</artifactId>
+			<version>[0.3,0.4)</version>
+		</dependency>
+		<!-- testing -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<repositories>
+		<!-- ros -->
+		<repository>
+			<id>ros</id>
+			<name>ros</name>
+			<url>https://github.com/wmlynar/rosjava_mvn_repo/raw/master</url>
+		</repository>
+		<!-- logging,httpclient,net -->
+		<repository>
+			<id>com.springsource.bundle.repository.external</id>
+			<name>SpringSource Enterprise Bundle Repository - External Releases</name>
+			<url>http://repository.springsource.com/maven/bundles/external</url>
+		</repository>
+	</repositories>
+</project>
