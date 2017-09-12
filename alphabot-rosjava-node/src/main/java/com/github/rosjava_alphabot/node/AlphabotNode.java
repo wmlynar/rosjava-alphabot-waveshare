@@ -3,18 +3,22 @@ package com.github.rosjava_alphabot.node;
 import org.ros.concurrent.CancellableLoop;
 import org.ros.concurrent.Rate;
 import org.ros.concurrent.WallTimeRate;
+import org.ros.message.MessageListener;
 import org.ros.message.Time;
 import org.ros.namespace.GraphName;
 import org.ros.node.AbstractNodeMain;
 import org.ros.node.ConnectedNode;
 import org.ros.node.topic.Publisher;
+import org.ros.node.topic.Subscriber;
 
+import geometry_msgs.Twist;
 import geometry_msgs.Vector3Stamped;
 
 public class AlphabotNode extends AbstractNodeMain {
 
 	private AlphabotDriver driver = new AlphabotDriver();
 	private Publisher<Vector3Stamped> distPublisher = null;
+	private static int QUEUE_SIZE = 10;
 
 	@Override
 	public GraphName getDefaultNodeName() {
@@ -23,7 +27,8 @@ public class AlphabotNode extends AbstractNodeMain {
 
 	@Override
 	public void onStart(final ConnectedNode connectedNode) {
-
+		
+		// publish distance traveled
 		Rate distRate = new WallTimeRate(10);
 		distPublisher = connectedNode.newPublisher("dist", Vector3Stamped._TYPE);
 		connectedNode.executeCancellableLoop(new CancellableLoop() {
@@ -32,7 +37,7 @@ public class AlphabotNode extends AbstractNodeMain {
 			protected void loop() throws InterruptedException {
 				Time time = connectedNode.getCurrentTime();
 
-				Dist dist = driver.getDistances();
+				DistMsg dist = driver.getDistances();
 
 				Vector3Stamped distVector = distPublisher.newMessage();
 				distVector.getHeader().setStamp(time);
@@ -44,6 +49,17 @@ public class AlphabotNode extends AbstractNodeMain {
 
 		});
 
+		// process twist messages
+		Subscriber<Twist> twistSubscriber = connectedNode.newSubscriber("cmd_vel", Twist._TYPE);
+		twistSubscriber.addMessageListener(new MessageListener<Twist>() {
+			
+			@Override
+			public void onNewMessage(Twist m) {
+				TwistMsg twist = new TwistMsg();
+				twist.linear = m.getLinear().getX();
+				twist.angular = m.getAngular().getZ();
+			}
+		}, QUEUE_SIZE);
 	}
-
+	
 }
