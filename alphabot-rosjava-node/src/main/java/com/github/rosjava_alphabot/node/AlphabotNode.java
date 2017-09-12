@@ -58,6 +58,7 @@ public class AlphabotNode extends AbstractNodeMain {
 				TwistMsg twist = new TwistMsg();
 				twist.linear = m.getLinear().getX();
 				twist.angular = m.getAngular().getZ();
+				driver.processTwistMessage(twist);
 			}
 		}, QUEUE_SIZE);
 	}

@@ -6,4 +6,7 @@ public class AlphabotDriver {
 		return null;
 	}
 
+	public void processTwistMessage(TwistMsg twist) {
+	}
+
 }
