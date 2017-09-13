@@ -4,7 +4,9 @@ import com.github.rosjava_alphabot.driver.dto.DistDto;
 import com.github.rosjava_alphabot.driver.dto.TwistDto;
 import com.github.rosjava_alphabot.driver.utils.Differentiator;
 import com.github.rosjava_alphabot.driver.utils.MiniPID;
-import com.github.rosjava_alphabot.encoder.AlphaBotConfig;
+import com.github.rosjava_alphabot.hardware.AlphaBotConfig;
+import com.github.rosjava_alphabot.hardware.EncoderCounter;
+import com.github.rosjava_alphabot.hardware.Motor;
 
 public class AlphabotDriver {
 	
@@ -92,10 +94,6 @@ public class AlphabotDriver {
 		
 		double currentVelocityLeft = distDifferentiatorLeft.differentiate(time, currentDistanceLeft);
 		double currentVelocityRight = distDifferentiatorRightD.differentiate(time, currentDistanceRight);
-		
-		if(!distDifferentiatorLeft.isOk() || !distDifferentiatorRightD.isOk()) {
-			return;
-		}
 		
 		// get PID output
 		int pwmLeft = (int) leftPid.getOutput(currentVelocityLeft, setpointVelocityLeft);

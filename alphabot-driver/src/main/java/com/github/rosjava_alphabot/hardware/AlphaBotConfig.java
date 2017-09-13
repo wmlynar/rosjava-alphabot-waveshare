@@ -1,4 +1,4 @@
-package com.github.rosjava_alphabot.encoder;
+package com.github.rosjava_alphabot.hardware;
 
 import com.pi4j.io.gpio.Pin;
 import com.pi4j.io.gpio.RaspiPin;
