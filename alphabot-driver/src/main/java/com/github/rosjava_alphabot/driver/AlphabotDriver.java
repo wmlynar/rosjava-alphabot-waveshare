@@ -2,11 +2,11 @@ package com.github.rosjava_alphabot.driver;
 
 import com.github.rosjava_alphabot.driver.dto.DistancesDto;
 import com.github.rosjava_alphabot.driver.dto.VelocitiesDto;
+import com.github.rosjava_alphabot.driver.hardware.AlphaBotConfig;
+import com.github.rosjava_alphabot.driver.hardware.EncoderCounter;
+import com.github.rosjava_alphabot.driver.hardware.Motor;
 import com.github.rosjava_alphabot.driver.utils.Differentiator;
 import com.github.rosjava_alphabot.driver.utils.MiniPID;
-import com.github.rosjava_alphabot.hardware.AlphaBotConfig;
-import com.github.rosjava_alphabot.hardware.EncoderCounter;
-import com.github.rosjava_alphabot.hardware.Motor;
 
 public class AlphabotDriver {
 	
