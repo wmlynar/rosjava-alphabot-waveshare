@@ -22,7 +22,6 @@ public class AlphabotNode extends AbstractNodeMain {
 
 	private AlphabotDriver driver = new AlphabotDriver();
 	
-	private Publisher<Vector3Stamped> distPublisher = null;
 	private static int QUEUE_SIZE = 10;
 
 	@Override
@@ -36,7 +35,7 @@ public class AlphabotNode extends AbstractNodeMain {
 		driver.startThreads();
 		
 		// publish distance traveled
-		distPublisher = connectedNode.newPublisher("dist", Vector3Stamped._TYPE);
+		Publisher<Vector3Stamped> distPublisher = connectedNode.newPublisher("dist", Vector3Stamped._TYPE);
 		connectedNode.executeCancellableLoop(new CancellableLoop() {
 
 			@Override
@@ -74,6 +73,21 @@ public class AlphabotNode extends AbstractNodeMain {
 				driver.setVelocities(twist);
 			}
 		}, QUEUE_SIZE);
+		
+		// process parameters messages
+		Subscriber<Vector3Stamped> parameterSubscriber = connectedNode.newSubscriber("parameters", Vector3Stamped._TYPE);
+		parameterSubscriber.addMessageListener(new MessageListener<Vector3Stamped>() {
+			
+			@Override
+			public void onNewMessage(Vector3Stamped m) {
+				double p = m.getVector().getX();
+				double i = m.getVector().getY();
+				double f = m.getVector().getZ();
+						
+				driver.setPidParameters(p, i, 0, f);
+			}
+		}, QUEUE_SIZE);
 	}
 	
 }
+
