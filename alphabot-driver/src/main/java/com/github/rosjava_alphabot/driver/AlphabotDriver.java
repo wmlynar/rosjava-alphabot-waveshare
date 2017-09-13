@@ -36,11 +36,6 @@ public class AlphabotDriver {
 		rightPid.setOutputLimits(100);
 	}
 	
-	public void setPidParameters(double p, double i, double d, double f) {
-		leftPid.setPID(p, i, d, f);
-		rightPid.setPID(p, i, d, f);
-	}
-	
 	public void startThreads() {
 		counterLeft.startThread();
 		counterRight.startThread();
@@ -56,6 +51,18 @@ public class AlphabotDriver {
 		t.start();
 	}
 	
+	public void setPidParameters(double p, double i, double d, double f) {
+		leftPid.setPID(p, i, d, f);
+		rightPid.setPID(p, i, d, f);
+	}
+	
+	public void setVelocities(VelocitiesDto velocities) {
+		synchronized (monitor) {
+			setpointVelocityLeft = velocities.velocityLeft;
+			setpointVelocityRight = velocities.velocityRight;
+		}
+	}
+
 	public DistancesDto getDistances() {
 		
 		DistancesDto dist = new DistancesDto();
@@ -65,14 +72,6 @@ public class AlphabotDriver {
 		
 		return dist;
 	}
-
-	public void processTwistMessage(VelocitiesDto twist) {
-		synchronized (monitor) {
-			setpointVelocityLeft = twist.velocityLeft;
-			setpointVelocityRight = twist.velocityRight;
-		}
-	}
-
 
 	private void controlLoop() {
 
@@ -107,6 +106,7 @@ public class AlphabotDriver {
 		counterLeft.setForward(pwmLeft>=0);
 		counterRight.setForward(pwmRight>=0);
 		
+		// sleep
 		try {
 			Thread.sleep(200);
 		} catch (InterruptedException e) {

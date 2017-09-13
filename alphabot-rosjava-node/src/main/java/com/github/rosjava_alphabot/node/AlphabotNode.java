@@ -71,7 +71,7 @@ public class AlphabotNode extends AbstractNodeMain {
 				twist.velocityLeft = linear - angular * AlphabotDriver.BASE_WIDTH * 0.5;
 				twist.velocityRight = linear + angular * AlphabotDriver.BASE_WIDTH * 0.5;
 				
-				driver.processTwistMessage(twist);
+				driver.setVelocities(twist);
 			}
 		}, QUEUE_SIZE);
 	}
