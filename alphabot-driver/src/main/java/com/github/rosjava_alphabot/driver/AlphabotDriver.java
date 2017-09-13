@@ -18,7 +18,7 @@ public class AlphabotDriver {
 	private Motor motorLeft = new Motor(AlphaBotConfig.Side.LEFT);
 	private Motor motorRight = new Motor(AlphaBotConfig.Side.RIGHT);
 	private Differentiator distDifferentiatorLeft = new Differentiator(1e-6);
-	private Differentiator distDifferentiatorRightD = new Differentiator(1e-6);
+	private Differentiator distDifferentiatorRight = new Differentiator(1e-6);
 	private MiniPID leftPid = new MiniPID(1, 0, 0, 50);
 	private MiniPID rightPid = new MiniPID(1, 0, 0, 50);
 	private volatile double setpointVelocityLeft;
@@ -61,7 +61,7 @@ public class AlphabotDriver {
 		DistancesDto dist = new DistancesDto();
 		
 		dist.left = counterLeft.getTicks() / TICKS_PER_METER;;
-		dist.right = counterRight.getTicks() / TICKS_PER_METER;;
+		dist.right = counterRight.getTicks() / TICKS_PER_METER;
 		
 		return dist;
 	}
@@ -93,7 +93,7 @@ public class AlphabotDriver {
 		double currentDistanceRight = counterRight.getTicks() / AlphaBotConfig.ticksPerMeter;
 		
 		double currentVelocityLeft = distDifferentiatorLeft.differentiate(time, currentDistanceLeft);
-		double currentVelocityRight = distDifferentiatorRightD.differentiate(time, currentDistanceRight);
+		double currentVelocityRight = distDifferentiatorRight.differentiate(time, currentDistanceRight);
 		
 		// get PID output
 		int pwmLeft = (int) leftPid.getOutput(currentVelocityLeft, setpointVelocityLeft);
