@@ -16,6 +16,7 @@ import com.github.rosjava_alphabot.driver.dto.DistancesDto;
 import com.github.rosjava_alphabot.driver.dto.VelocitiesDto;
 
 import geometry_msgs.Twist;
+import geometry_msgs.Vector3;
 import geometry_msgs.Vector3Stamped;
 
 public class AlphabotNode extends AbstractNodeMain {
@@ -75,14 +76,14 @@ public class AlphabotNode extends AbstractNodeMain {
 		}, QUEUE_SIZE);
 		
 		// process parameters messages
-		Subscriber<Vector3Stamped> parameterSubscriber = connectedNode.newSubscriber("parameters", Vector3Stamped._TYPE);
-		parameterSubscriber.addMessageListener(new MessageListener<Vector3Stamped>() {
+		Subscriber<Vector3> parameterSubscriber = connectedNode.newSubscriber("parameters", Vector3._TYPE);
+		parameterSubscriber.addMessageListener(new MessageListener<Vector3>() {
 			
 			@Override
-			public void onNewMessage(Vector3Stamped m) {
-				double p = m.getVector().getX();
-				double i = m.getVector().getY();
-				double f = m.getVector().getZ();
+			public void onNewMessage(Vector3 m) {
+				double p = m.getX();
+				double i = m.getY();
+				double f = m.getZ();
 						
 				driver.setPidParameters(p, i, 0, f);
 			}
