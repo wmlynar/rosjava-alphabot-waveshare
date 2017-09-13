@@ -12,8 +12,8 @@ import org.ros.node.topic.Publisher;
 import org.ros.node.topic.Subscriber;
 
 import com.github.rosjava_alphabot.driver.AlphabotDriver;
-import com.github.rosjava_alphabot.driver.dto.DistDto;
-import com.github.rosjava_alphabot.driver.dto.TwistDto;
+import com.github.rosjava_alphabot.driver.dto.DistancesDto;
+import com.github.rosjava_alphabot.driver.dto.VelocitiesDto;
 
 import geometry_msgs.Twist;
 import geometry_msgs.Vector3Stamped;
@@ -25,6 +25,8 @@ public class AlphabotNode extends AbstractNodeMain {
 	private Publisher<Vector3Stamped> distPublisher = null;
 	private static int QUEUE_SIZE = 10;
 
+	private double BASE_WIDTH = 0.17;
+	
 	@Override
 	public GraphName getDefaultNodeName() {
 		return GraphName.of("alphabot");
@@ -44,7 +46,7 @@ public class AlphabotNode extends AbstractNodeMain {
 				
 				Time time = connectedNode.getCurrentTime();
 
-				DistDto dist = driver.getDistances();
+				DistancesDto dist = driver.getDistances();
 
 				Vector3Stamped distVector = distPublisher.newMessage();
 				distVector.getHeader().setStamp(time);
@@ -63,9 +65,14 @@ public class AlphabotNode extends AbstractNodeMain {
 			
 			@Override
 			public void onNewMessage(Twist m) {
-				TwistDto twist = new TwistDto();
-				twist.linear = m.getLinear().getX();
-				twist.angular = m.getAngular().getZ();
+				VelocitiesDto twist = new VelocitiesDto();
+				
+				double linear = m.getLinear().getX();
+				double angular = m.getAngular().getZ();
+				
+				twist.velocityLeft = linear - angular * BASE_WIDTH * 0.5;
+				twist.velocityRight = linear + angular * BASE_WIDTH * 0.5;
+				
 				driver.processTwistMessage(twist);
 			}
 		}, QUEUE_SIZE);

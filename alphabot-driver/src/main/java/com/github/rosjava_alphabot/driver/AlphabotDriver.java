@@ -1,7 +1,7 @@
 package com.github.rosjava_alphabot.driver;
 
-import com.github.rosjava_alphabot.driver.dto.DistDto;
-import com.github.rosjava_alphabot.driver.dto.TwistDto;
+import com.github.rosjava_alphabot.driver.dto.DistancesDto;
+import com.github.rosjava_alphabot.driver.dto.VelocitiesDto;
 import com.github.rosjava_alphabot.driver.utils.Differentiator;
 import com.github.rosjava_alphabot.driver.utils.MiniPID;
 import com.github.rosjava_alphabot.hardware.AlphaBotConfig;
@@ -11,7 +11,6 @@ import com.github.rosjava_alphabot.hardware.Motor;
 public class AlphabotDriver {
 	
 	private double TICKS_PER_METER = 190.48 / 2;
-	private double BASE_WIDTH = 0.17;
 	
 	private EncoderCounter counterLeft = new EncoderCounter(AlphaBotConfig.Side.LEFT);
 	private EncoderCounter counterRight = new EncoderCounter(AlphaBotConfig.Side.RIGHT);
@@ -56,9 +55,9 @@ public class AlphabotDriver {
 		t.start();
 	}
 	
-	public DistDto getDistances() {
+	public DistancesDto getDistances() {
 		
-		DistDto dist = new DistDto();
+		DistancesDto dist = new DistancesDto();
 		
 		dist.left = counterLeft.getTicks() / TICKS_PER_METER;;
 		dist.right = counterRight.getTicks() / TICKS_PER_METER;;
@@ -66,10 +65,10 @@ public class AlphabotDriver {
 		return dist;
 	}
 
-	public void processTwistMessage(TwistDto twist) {
+	public void processTwistMessage(VelocitiesDto twist) {
 		synchronized (monitor) {
-			setpointVelocityLeft = twist.linear - twist.angular * BASE_WIDTH * 0.5;
-			setpointVelocityRight = twist.linear + twist.angular * BASE_WIDTH * 0.5;
+			setpointVelocityLeft = twist.velocityLeft;
+			setpointVelocityRight = twist.velocityRight;
 		}
 	}
 
@@ -89,8 +88,8 @@ public class AlphabotDriver {
 		double time = System.currentTimeMillis() / 1000.;
 		
 		// compute velocities
-		double currentDistanceLeft = counterLeft.getTicks() / TICKS_PER_METER;;
-		double currentDistanceRight = counterRight.getTicks() / TICKS_PER_METER;;
+		double currentDistanceLeft = counterLeft.getTicks() / AlphaBotConfig.ticksPerMeter;
+		double currentDistanceRight = counterRight.getTicks() / AlphaBotConfig.ticksPerMeter;
 		
 		double currentVelocityLeft = distDifferentiatorLeft.differentiate(time, currentDistanceLeft);
 		double currentVelocityRight = distDifferentiatorRightD.differentiate(time, currentDistanceRight);
