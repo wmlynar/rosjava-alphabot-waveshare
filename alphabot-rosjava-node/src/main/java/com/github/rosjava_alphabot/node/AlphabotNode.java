@@ -49,7 +49,9 @@ public class AlphabotNode extends AbstractNodeMain {
 				distVector.getVector().setY(dist.right);
 				distPublisher.publish(distVector);
 
-				distRate.wait();
+				synchronized (distRate) {
+					distRate.wait();
+				}
 			}
 
 		});

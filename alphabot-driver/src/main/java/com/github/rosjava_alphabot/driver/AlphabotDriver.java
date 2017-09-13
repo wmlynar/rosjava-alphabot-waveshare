@@ -6,7 +6,7 @@ import com.github.rosjava_alphabot.driver.dto.TwistDto;
 public class AlphabotDriver {
 
 	public DistDto getDistances() {
-		return null;
+		return new DistDto();
 	}
 
 	public void processTwistMessage(TwistDto twist) {
