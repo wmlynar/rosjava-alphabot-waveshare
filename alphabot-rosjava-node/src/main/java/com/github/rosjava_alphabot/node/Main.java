@@ -14,12 +14,11 @@ public class Main {
 	private static AlphabotNode alphabotNode = new AlphabotNode();
 
 	public static void main(String[] args) {
-		NodeConfiguration nodeConfiguration = null;
 		if (args.length == 0) {
 			args = EMPTY;
 		}
 		CommandLineLoader loader = new CommandLineLoader(Lists.newArrayList(args));
-		nodeConfiguration = loader.build();
+		NodeConfiguration nodeConfiguration = loader.build();
 
 		NodeMainExecutor nodeMainExecutor = DefaultNodeMainExecutor.newDefault();
 		nodeMainExecutor.execute(alphabotNode, nodeConfiguration);
