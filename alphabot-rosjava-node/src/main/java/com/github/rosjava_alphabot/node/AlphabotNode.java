@@ -33,7 +33,6 @@ public class AlphabotNode extends AbstractNodeMain {
 	public void onStart(final ConnectedNode connectedNode) {
 		
 		// publish distance traveled
-		Rate distRate = new WallTimeRate(10);
 		distPublisher = connectedNode.newPublisher("dist", Vector3Stamped._TYPE);
 		connectedNode.executeCancellableLoop(new CancellableLoop() {
 
@@ -49,9 +48,7 @@ public class AlphabotNode extends AbstractNodeMain {
 				distVector.getVector().setY(dist.right);
 				distPublisher.publish(distVector);
 
-				synchronized (distRate) {
-					distRate.wait();
-				}
+				Thread.sleep(100);
 			}
 
 		});
