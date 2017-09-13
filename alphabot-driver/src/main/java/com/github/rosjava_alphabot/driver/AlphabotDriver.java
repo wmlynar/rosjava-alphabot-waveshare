@@ -15,8 +15,8 @@ public class AlphabotDriver {
 	private EncoderCounter counterRight = new EncoderCounter(AlphaBotConfig.Side.RIGHT);
 	private Motor motorLeft = new Motor(AlphaBotConfig.Side.LEFT);
 	private Motor motorRight = new Motor(AlphaBotConfig.Side.RIGHT);
-	private Differentiator leftDistDifferentiator = new Differentiator(1e-6);
-	private Differentiator rightDistDifferentiator = new Differentiator(1e-6);
+	private Differentiator distDifferentiatorLeft = new Differentiator(1e-6);
+	private Differentiator distDifferentiatorRightD = new Differentiator(1e-6);
 	private MiniPID leftPid = new MiniPID(1, 0, 0, 50);
 	private MiniPID rightPid = new MiniPID(1, 0, 0, 50);
 	private volatile double setpointVelocityLeft;
@@ -87,19 +87,19 @@ public class AlphabotDriver {
 		double time = System.currentTimeMillis() / 1000.;
 		
 		// compute velocities
-		double currentLeftDistance = counterLeft.getTicks() / TICKS_PER_METER;;
-		double currentRightDistance = counterRight.getTicks() / TICKS_PER_METER;;
+		double currentDistanceLeft = counterLeft.getTicks() / TICKS_PER_METER;;
+		double currentDistanceRight = counterRight.getTicks() / TICKS_PER_METER;;
 		
-		double currentLeftVelocity = leftDistDifferentiator.differentiate(time, currentLeftDistance);
-		double currentRightVelocity = rightDistDifferentiator.differentiate(time, currentRightDistance);
+		double currentVelocityLeft = distDifferentiatorLeft.differentiate(time, currentDistanceLeft);
+		double currentVelocityRight = distDifferentiatorRightD.differentiate(time, currentDistanceRight);
 		
-		if(!leftDistDifferentiator.isOk() || !rightDistDifferentiator.isOk()) {
+		if(!distDifferentiatorLeft.isOk() || !distDifferentiatorRightD.isOk()) {
 			return;
 		}
 		
 		// get PID output
-		int pwmLeft = (int) leftPid.getOutput(currentLeftVelocity, setpointVelocityLeft);
-		int pwmRight = (int) rightPid.getOutput(currentRightVelocity, setpointVelocityRight);
+		int pwmLeft = (int) leftPid.getOutput(currentVelocityLeft, setpointVelocityLeft);
+		int pwmRight = (int) rightPid.getOutput(currentVelocityRight, setpointVelocityRight);
 
 		// set output
 		motorLeft.setPWM(pwmLeft);
