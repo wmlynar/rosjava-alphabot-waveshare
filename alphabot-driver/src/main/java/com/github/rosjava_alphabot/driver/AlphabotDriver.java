@@ -10,7 +10,8 @@ import com.github.rosjava_alphabot.hardware.Motor;
 
 public class AlphabotDriver {
 	
-	private double TICKS_PER_METER = 190.48 / 2;
+	public static double BASE_WIDTH = AlphaBotConfig.baseWidthInMeters;
+	public static double TICKS_PER_METER = AlphaBotConfig.ticksPerMeter;
 	
 	private EncoderCounter counterLeft = new EncoderCounter(AlphaBotConfig.Side.LEFT);
 	private EncoderCounter counterRight = new EncoderCounter(AlphaBotConfig.Side.RIGHT);

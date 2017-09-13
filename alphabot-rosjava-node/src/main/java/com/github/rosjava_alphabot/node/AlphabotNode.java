@@ -25,8 +25,6 @@ public class AlphabotNode extends AbstractNodeMain {
 	private Publisher<Vector3Stamped> distPublisher = null;
 	private static int QUEUE_SIZE = 10;
 
-	private double BASE_WIDTH = 0.17;
-	
 	@Override
 	public GraphName getDefaultNodeName() {
 		return GraphName.of("alphabot");
@@ -70,8 +68,8 @@ public class AlphabotNode extends AbstractNodeMain {
 				double linear = m.getLinear().getX();
 				double angular = m.getAngular().getZ();
 				
-				twist.velocityLeft = linear - angular * BASE_WIDTH * 0.5;
-				twist.velocityRight = linear + angular * BASE_WIDTH * 0.5;
+				twist.velocityLeft = linear - angular * AlphabotDriver.BASE_WIDTH * 0.5;
+				twist.velocityRight = linear + angular * AlphabotDriver.BASE_WIDTH * 0.5;
 				
 				driver.processTwistMessage(twist);
 			}
