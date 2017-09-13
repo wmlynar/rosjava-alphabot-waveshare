@@ -2,16 +2,68 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>alphabot-rosjava-node</artifactId>
+	<packaging>jar</packaging>
 	<parent>
 		<groupId>com.github.rosjava-alphabot</groupId>
 		<artifactId>rosjava-waveshare-alphabot</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
+	<properties>
+		<!-- jar parameters -->
+		<main.class>com.github.rosjava_alphabot.node.Main</main.class>
+
+		<!-- raspberry pi parameters -->
+		<pi.host>192.168.1.20</pi.host>
+		<pi.port>22</pi.port>
+		<pi.user>pi</pi.user>
+		<pi.password>raspberry</pi.password>
+		<pi.deployDirectory>/home/pi/java</pi.deployDirectory>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>com.github.rosjava-alphabot</groupId>
 			<artifactId>alphabot-driver</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<!-- standard messages -->
+		<dependency>
+			<groupId>org.ros.rosjava_messages</groupId>
+			<artifactId>std_msgs</artifactId>
+			<version>[0.5,0.6)</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ros.rosjava_messages</groupId>
+			<artifactId>sensor_msgs</artifactId>
+			<version>[1.12,1.13)</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ros.rosjava_messages</groupId>
+			<artifactId>rosgraph_msgs</artifactId>
+			<version>[1.11,1.12)</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ros.rosjava_messages</groupId>
+			<artifactId>geometry_msgs</artifactId>
+			<version>[1.12,1.13)</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ros.rosjava_messages</groupId>
+			<artifactId>nav_msgs</artifactId>
+			<version>[1.12,1.13)</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ros.rosjava_messages</groupId>
+			<artifactId>tf2_msgs</artifactId>
+			<version>[0.5,0.6)</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ros.rosjava_messages</groupId>
+			<artifactId>rosjava_test_msgs</artifactId>
+			<version>[0.3,0.4)</version>
 		</dependency>
 	</dependencies>
 	<profiles>

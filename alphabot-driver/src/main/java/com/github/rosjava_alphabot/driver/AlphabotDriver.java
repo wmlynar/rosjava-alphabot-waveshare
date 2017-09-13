@@ -1,15 +1,15 @@
 package com.github.rosjava_alphabot.driver;
 
-import com.github.rosjava_alphabot.msgs.DistMsg;
-import com.github.rosjava_alphabot.msgs.TwistMsg;
+import com.github.rosjava_alphabot.driver.dto.DistDto;
+import com.github.rosjava_alphabot.driver.dto.TwistDto;
 
 public class AlphabotDriver {
 
-	public DistMsg getDistances() {
+	public DistDto getDistances() {
 		return null;
 	}
 
-	public void processTwistMessage(TwistMsg twist) {
+	public void processTwistMessage(TwistDto twist) {
 	}
 
 }

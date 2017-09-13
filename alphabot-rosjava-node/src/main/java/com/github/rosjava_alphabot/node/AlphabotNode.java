@@ -12,8 +12,8 @@ import org.ros.node.topic.Publisher;
 import org.ros.node.topic.Subscriber;
 
 import com.github.rosjava_alphabot.driver.AlphabotDriver;
-import com.github.rosjava_alphabot.msgs.DistMsg;
-import com.github.rosjava_alphabot.msgs.TwistMsg;
+import com.github.rosjava_alphabot.driver.dto.DistDto;
+import com.github.rosjava_alphabot.driver.dto.TwistDto;
 
 import geometry_msgs.Twist;
 import geometry_msgs.Vector3Stamped;
@@ -41,12 +41,13 @@ public class AlphabotNode extends AbstractNodeMain {
 			protected void loop() throws InterruptedException {
 				Time time = connectedNode.getCurrentTime();
 
-				DistMsg dist = driver.getDistances();
+				DistDto dist = driver.getDistances();
 
 				Vector3Stamped distVector = distPublisher.newMessage();
 				distVector.getHeader().setStamp(time);
 				distVector.getVector().setX(dist.left);
 				distVector.getVector().setY(dist.right);
+				distPublisher.publish(distVector);
 
 				distRate.wait();
 			}
@@ -59,7 +60,7 @@ public class AlphabotNode extends AbstractNodeMain {
 			
 			@Override
 			public void onNewMessage(Twist m) {
-				TwistMsg twist = new TwistMsg();
+				TwistDto twist = new TwistDto();
 				twist.linear = m.getLinear().getX();
 				twist.angular = m.getAngular().getZ();
 				driver.processTwistMessage(twist);

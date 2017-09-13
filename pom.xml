@@ -9,16 +9,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-
-		<!-- jar parameters -->
-		<main.class>org.ros.rosjava_tutorial_pubsub.PubSubExampleWithCore</main.class>
-
-		<!-- raspberry pi parameters -->
-		<pi.host>192.168.1.20</pi.host>
-		<pi.port>22</pi.port>
-		<pi.user>pi</pi.user>
-		<pi.password>raspberry</pi.password>
-		<pi.deployDirectory>/home/pi/java</pi.deployDirectory>
 	</properties>
 	<modules>
 		<module>alphabot-driver</module>
@@ -55,46 +45,6 @@
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>12.0</version>
-		</dependency>
-		<!-- standard messages -->
-		<dependency>
-			<groupId>org.ros.rosjava_messages</groupId>
-			<artifactId>std_msgs</artifactId>
-			<version>[0.5,0.6)</version>
-		</dependency>
-		<dependency>
-			<groupId>org.ros.rosjava_messages</groupId>
-			<artifactId>sensor_msgs</artifactId>
-			<version>[1.12,1.13)</version>
-		</dependency>
-		<dependency>
-			<groupId>org.ros.rosjava_messages</groupId>
-			<artifactId>rosgraph_msgs</artifactId>
-			<version>[1.11,1.12)</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.ros.rosjava_messages</groupId>
-			<artifactId>geometry_msgs</artifactId>
-			<version>[1.12,1.13)</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.ros.rosjava_messages</groupId>
-			<artifactId>nav_msgs</artifactId>
-			<version>[1.12,1.13)</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.ros.rosjava_messages</groupId>
-			<artifactId>tf2_msgs</artifactId>
-			<version>[0.5,0.6)</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.ros.rosjava_messages</groupId>
-			<artifactId>rosjava_test_msgs</artifactId>
-			<version>[0.3,0.4)</version>
 		</dependency>
 		<!-- testing -->
 		<dependency>
