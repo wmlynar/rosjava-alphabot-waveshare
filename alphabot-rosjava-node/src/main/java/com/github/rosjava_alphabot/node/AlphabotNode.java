@@ -21,6 +21,7 @@ import geometry_msgs.Vector3Stamped;
 public class AlphabotNode extends AbstractNodeMain {
 
 	private AlphabotDriver driver = new AlphabotDriver();
+	
 	private Publisher<Vector3Stamped> distPublisher = null;
 	private static int QUEUE_SIZE = 10;
 
@@ -32,12 +33,15 @@ public class AlphabotNode extends AbstractNodeMain {
 	@Override
 	public void onStart(final ConnectedNode connectedNode) {
 		
+		driver.startThreads();
+		
 		// publish distance traveled
 		distPublisher = connectedNode.newPublisher("dist", Vector3Stamped._TYPE);
 		connectedNode.executeCancellableLoop(new CancellableLoop() {
 
 			@Override
 			protected void loop() throws InterruptedException {
+				
 				Time time = connectedNode.getCurrentTime();
 
 				DistDto dist = driver.getDistances();
