@@ -32,12 +32,12 @@ public class AlphabotDriver {
 	
 	public AlphabotDriver() {
 		// PWM output needed to move the robot because of static friction
-		leftPid.setMaxIOutput(100);
-		rightPid.setMaxIOutput(100);
+		leftPid.setMaxIOutput(50);
+		rightPid.setMaxIOutput(50);
 		
 		// output cannot be higher than 100, or the software PWM will go crazy
-		leftPid.setOutputLimits(50);
-		rightPid.setOutputLimits(50);
+		leftPid.setOutputLimits(100);
+		rightPid.setOutputLimits(100);
 	}
 
 	
