@@ -5,7 +5,6 @@ import org.ros.node.DefaultNodeMainExecutor;
 import org.ros.node.NodeConfiguration;
 import org.ros.node.NodeMainExecutor;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 
 public class Main {

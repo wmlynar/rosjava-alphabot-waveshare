@@ -11,7 +11,7 @@ import com.github.rosjava_alphabot.driver.utils.MiniPID;
 public class AlphabotDriver {
 	
 	public static int PERIOD_MS = 200;
-	public static double BASE_WIDTH = AlphaBotConfig.baseWidthInMeters;
+	//public static double BASE_WIDTH = AlphaBotConfig.baseWidthInMeters;
 	public static double TICKS_PER_METER = AlphaBotConfig.ticksPerMeter;
 	
 	private EncoderCounter counterLeft = new EncoderCounter(AlphaBotConfig.Side.LEFT);

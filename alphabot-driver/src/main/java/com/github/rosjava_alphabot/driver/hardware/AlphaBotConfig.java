@@ -24,7 +24,7 @@ public class AlphaBotConfig {
 	
 	// CHASSIS PARAMETERS
 	public final static double ticksPerMeter =			190.48 / 2;
-	public final static double baseWidthInMeters =		0.132;
+	public final static double baseWidthInMeters =		0.132 * 2;
 	
 	// SENSOR PARAMETERS
 	public final static int trackerNumberOfSensors =	5;
