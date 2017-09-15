@@ -77,7 +77,7 @@ public class AlphabotNode extends AbstractNodeMain {
 
 				// publish wheel velocities
 				Vector3Stamped velocityVector = velocityPublisher.newMessage();
-				velocityVector.getHeader().setStamp(Time.fromNano((long) (1000000000L * velocities.time)));
+				velocityVector.getHeader().setStamp(time);//Time.fromNano((long) (1000000000L * velocities.time)));
 				velocityVector.getVector().setX(velocities.left);
 				velocityVector.getVector().setY(velocities.right);
 				velocityPublisher.publish(velocityVector);
@@ -86,13 +86,13 @@ public class AlphabotNode extends AbstractNodeMain {
 
 				double linearVelocity = (velocities.left + velocities.right) / 2;
 				double angularVelocity = (velocities.right - velocities.left)
-						/ (AlphaBotConfig.baseWidthInMeters * 0.5);
+						/ (AlphaBotConfig.baseWidthInMeters);
 
 				double dLeft = dist.left - prevDist.left;
 				double dRight = dist.right - prevDist.right;
 
 				double translation = (dLeft + dRight) / 2;
-				double rotation = (dRight - dLeft) / (AlphaBotConfig.baseWidthInMeters * 0.5);
+				double rotation = (dRight - dLeft) / (AlphaBotConfig.baseWidthInMeters);
 
 				double relativeDistanceX = Math.cos(rotation) * translation;
 				double relativeDistanceY = -Math.sin(rotation) * translation;
@@ -118,7 +118,7 @@ public class AlphabotNode extends AbstractNodeMain {
 				geometry_msgs.TransformStamped newTransform = connectedNode.getTopicMessageFactory()
 						.newFromType(geometry_msgs.TransformStamped._TYPE);
 
-				newTransform.getHeader().setStamp(time);
+				newTransform.getHeader().setStamp(connectedNode.getCurrentTime());
 				newTransform.getHeader().setFrameId("odom");
 
 				newTransform.setChildFrameId("base_link");
@@ -138,7 +138,7 @@ public class AlphabotNode extends AbstractNodeMain {
 
 				nav_msgs.Odometry newOdometry = odometryPublisher.newMessage();
 
-				newOdometry.getHeader().setStamp(time);
+				newOdometry.getHeader().setStamp(connectedNode.getCurrentTime());
 				newOdometry.getHeader().setFrameId("odom");
 
 				newOdometry.setChildFrameId("base_link");

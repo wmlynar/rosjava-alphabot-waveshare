@@ -39,10 +39,13 @@ public class AlphabotDriver {
 		leftPid.setOutputLimits(50);
 		rightPid.setOutputLimits(50);
 	}
+
 	
 	public void startThreads() {
-		counterLeft.startThread();
-		counterRight.startThread();
+		//counterLeft.startThread();
+		counterLeft.mountEvent();
+		//counterRight.startThread();
+		counterRight.mountEvent();
 		
 		Thread t = new Thread(new Runnable() {
 			@Override
