@@ -35,6 +35,28 @@ public class AlphabotNode extends AbstractNodeMain {
 		
 		driver.startThreads();
 		
+		// publish velocities
+		Publisher<Vector3Stamped> velocityPublisher = connectedNode.newPublisher("vel", Vector3Stamped._TYPE);
+		connectedNode.executeCancellableLoop(new CancellableLoop() {
+
+			@Override
+			protected void loop() throws InterruptedException {
+				
+				Time time = connectedNode.getCurrentTime();
+
+				VelocitiesDto dist = driver.getVelocities();
+
+				Vector3Stamped distVector = velocityPublisher.newMessage();
+				distVector.getHeader().setStamp(Time.fromNano((long)(1000000000L*dist.time)));
+				distVector.getVector().setX(dist.left);
+				distVector.getVector().setY(dist.right);
+				velocityPublisher.publish(distVector);
+
+				Thread.sleep(100);
+			}
+
+		});
+
 		// publish distance traveled
 		Publisher<Vector3Stamped> distPublisher = connectedNode.newPublisher("dist", Vector3Stamped._TYPE);
 		connectedNode.executeCancellableLoop(new CancellableLoop() {
@@ -68,8 +90,8 @@ public class AlphabotNode extends AbstractNodeMain {
 				double linear = m.getLinear().getX();
 				double angular = m.getAngular().getZ();
 				
-				twist.velocityLeft = linear - angular * AlphabotDriver.BASE_WIDTH * 0.5;
-				twist.velocityRight = linear + angular * AlphabotDriver.BASE_WIDTH * 0.5;
+				twist.left = linear - angular * AlphabotDriver.BASE_WIDTH * 0.5;
+				twist.right = linear + angular * AlphabotDriver.BASE_WIDTH * 0.5;
 				
 				driver.setVelocities(twist);
 			}

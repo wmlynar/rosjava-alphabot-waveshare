@@ -10,6 +10,7 @@ import com.github.rosjava_alphabot.driver.utils.MiniPID;
 
 public class AlphabotDriver {
 	
+	public static int PERIOD_MS = 200;
 	public static double BASE_WIDTH = AlphaBotConfig.baseWidthInMeters;
 	public static double TICKS_PER_METER = AlphaBotConfig.ticksPerMeter;
 	
@@ -19,21 +20,24 @@ public class AlphabotDriver {
 	private Motor motorRight = new Motor(AlphaBotConfig.Side.RIGHT);
 	private Differentiator distDifferentiatorLeft = new Differentiator(1e-6);
 	private Differentiator distDifferentiatorRight = new Differentiator(1e-6);
-	private MiniPID leftPid = new MiniPID(1, 0, 0, 50);
-	private MiniPID rightPid = new MiniPID(1, 0, 0, 50);
+	private MiniPID leftPid = new MiniPID(50, 50*PERIOD_MS/1000., 0, 100);
+	private MiniPID rightPid = new MiniPID(50, 50*PERIOD_MS/1000., 0, 115);
 	private volatile double setpointVelocityLeft;
 	private volatile double setpointVelocityRight;
 	
 	private Object monitor = new Object();
+	private double currentVelocityLeft;
+	private double currentVelocityRight;
+	private double measurementTime;
 	
 	public AlphabotDriver() {
 		// PWM output needed to move the robot because of static friction
-		leftPid.setMaxIOutput(30);
-		rightPid.setMaxIOutput(30);
+		leftPid.setMaxIOutput(100);
+		rightPid.setMaxIOutput(100);
 		
 		// output cannot be higher than 100, or the software PWM will go crazy
-		leftPid.setOutputLimits(100);
-		rightPid.setOutputLimits(100);
+		leftPid.setOutputLimits(50);
+		rightPid.setOutputLimits(50);
 	}
 	
 	public void startThreads() {
@@ -52,15 +56,28 @@ public class AlphabotDriver {
 	}
 	
 	public void setPidParameters(double p, double i, double d, double f) {
-		leftPid.setPID(p, i, d, f);
-		rightPid.setPID(p, i, d, f);
+		leftPid.setPID(p, i*PERIOD_MS/1000., d, f);
+		rightPid.setPID(p, i*PERIOD_MS/1000., d, f);
 	}
 	
 	public void setVelocities(VelocitiesDto velocities) {
 		synchronized (monitor) {
-			setpointVelocityLeft = velocities.velocityLeft;
-			setpointVelocityRight = velocities.velocityRight;
+			setpointVelocityLeft = velocities.left;
+			setpointVelocityRight = velocities.right;
 		}
+	}
+
+	public VelocitiesDto getVelocities() {
+		
+		VelocitiesDto dist = new VelocitiesDto();
+		
+		synchronized (monitor) {
+			dist.time = measurementTime;
+			dist.left = currentVelocityLeft;
+			dist.right = currentVelocityRight;
+		}
+		
+		return dist;
 	}
 
 	public DistancesDto getDistances() {
@@ -69,7 +86,7 @@ public class AlphabotDriver {
 		
 		dist.left = counterLeft.getTicks() / TICKS_PER_METER;;
 		dist.right = counterRight.getTicks() / TICKS_PER_METER;
-		
+
 		return dist;
 	}
 
@@ -93,11 +110,17 @@ public class AlphabotDriver {
 		
 		double currentVelocityLeft = distDifferentiatorLeft.differentiate(time, currentDistanceLeft);
 		double currentVelocityRight = distDifferentiatorRight.differentiate(time, currentDistanceRight);
+
+		synchronized (monitor) {
+			this.currentVelocityLeft = currentVelocityLeft;
+			this.currentVelocityRight = currentVelocityRight;
+			this.measurementTime = time;
+		}
 		
 		// get PID output
 		int pwmLeft = (int) leftPid.getOutput(currentVelocityLeft, setpointVelocityLeft);
 		int pwmRight = (int) rightPid.getOutput(currentVelocityRight, setpointVelocityRight);
-
+		
 		// set output
 		motorLeft.setPWM(pwmLeft);
 		motorRight.setPWM(pwmRight);
@@ -108,7 +131,7 @@ public class AlphabotDriver {
 		
 		// sleep
 		try {
-			Thread.sleep(200);
+			Thread.sleep(PERIOD_MS);
 		} catch (InterruptedException e) {
 		}
 	}

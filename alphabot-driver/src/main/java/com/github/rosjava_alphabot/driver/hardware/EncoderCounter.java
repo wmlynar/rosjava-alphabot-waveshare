@@ -57,14 +57,13 @@ public class EncoderCounter {
 
 				}
 			}
-
-			private void increaseCounter() {
-				synchronized (monitor) {
-					count += direction;
-				}
-			}
 		});
 		t.start();
 	}
 
+	private void increaseCounter() {
+		synchronized (monitor) {
+			count += direction;
+		}
+	}
 }
