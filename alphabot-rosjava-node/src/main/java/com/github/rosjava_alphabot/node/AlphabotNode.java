@@ -118,7 +118,7 @@ public class AlphabotNode extends AbstractNodeMain {
 				geometry_msgs.TransformStamped newTransform = connectedNode.getTopicMessageFactory()
 						.newFromType(geometry_msgs.TransformStamped._TYPE);
 
-				newTransform.getHeader().setStamp(connectedNode.getCurrentTime());
+				newTransform.getHeader().setStamp(time);
 				newTransform.getHeader().setFrameId("odom");
 
 				newTransform.setChildFrameId("base_link");
@@ -138,7 +138,7 @@ public class AlphabotNode extends AbstractNodeMain {
 
 				nav_msgs.Odometry newOdometry = odometryPublisher.newMessage();
 
-				newOdometry.getHeader().setStamp(connectedNode.getCurrentTime());
+				newOdometry.getHeader().setStamp(time);
 				newOdometry.getHeader().setFrameId("odom");
 
 				newOdometry.setChildFrameId("base_link");
