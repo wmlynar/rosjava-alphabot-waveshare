@@ -11,6 +11,7 @@ import com.github.rosjava_alphabot.driver.utils.MiniPID;
 public class AlphabotDriver {
 	
 	public static int PERIOD_MS = 200;
+	public static double ZERO_VELOCITY = 0.001;
 	
 	private EncoderCounter counterLeft = new EncoderCounter(AlphaBotConfig.Side.LEFT);
 	private EncoderCounter counterRight = new EncoderCounter(AlphaBotConfig.Side.RIGHT);
@@ -123,8 +124,16 @@ public class AlphabotDriver {
 		int pwmRight = (int) rightPid.getOutput(currentVelocityRight, setpointVelocityRight);
 		
 		// set output
-		motorLeft.setPWM(pwmLeft);
-		motorRight.setPWM(pwmRight);
+		if(Math.abs(setpointVelocityLeft) < ZERO_VELOCITY && Math.abs(currentVelocityLeft) < ZERO_VELOCITY) {
+			motorLeft.stop();
+		} else {
+			motorLeft.setPWM(pwmLeft);
+		}
+		if(Math.abs(setpointVelocityRight) < ZERO_VELOCITY && Math.abs(currentVelocityRight) < ZERO_VELOCITY) {
+			motorRight.stop();
+		} else {
+			motorRight.setPWM(pwmRight);
+		}
 
 		// set direction of rotation for tick counting
 		counterLeft.setForward(pwmLeft>=0);
@@ -135,5 +144,11 @@ public class AlphabotDriver {
 			Thread.sleep(PERIOD_MS);
 		} catch (InterruptedException e) {
 		}
+	}
+
+
+	public void shutdown() {
+		motorLeft.stop();
+		motorRight.stop();
 	}
 }
